@@ -1,0 +1,36 @@
+#Merging 2 files in one
+
+apiVersion: v1
+kind: Service
+metadata: 
+  name: backend
+spec:
+ selector:
+  app: second-app
+ ports:
+  - protocol: 'TCP'
+    port: 80
+    targetPort: 8080
+ type: LoadBalancer
+--- 
+apiVersion: apps/v1 #specify version
+kind: Deployment # objects
+metadata:    #name of deployment object
+  name: second-app-deployment
+spec: #define how this deployment configured
+  replicas: 1  # pods count
+  selector:
+    matchLabels:  #what labels controled by this deployment
+      app: second-app 
+
+  template:  # image
+    metadata:  # name of image
+      labels:  #
+        app: second-app #random names app and second-app 
+    spec:   # pod spec
+      containers: 
+        - name: second-node # container name
+          image: shadibadria/kube-image:v2
+
+          
+
