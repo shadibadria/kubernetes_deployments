@@ -1,0 +1,29 @@
+apiVersion: apps/v1 #specify version
+kind: Deployment # objects
+metadata:    #name of deployment object
+  name: app-deployment
+spec: #define how this deployment configured
+  replicas: 1 # pods count
+  selector:
+    matchLabels:  #what labels controled by this deployment
+      app: my-app 
+
+  template:  # image
+    metadata:  # name of image
+      labels:  #
+        app: my-app #random names  
+    spec:   # pod spec
+      containers: 
+        - name: node-app # container name
+          image: shadibadria/kube-image:latest
+          imagePullPolicy: Always #pull latest image
+          livenessProbe: # if container crash start it again
+            httpGet:
+              path: /
+              port: 8080
+            periodSeconds: 10
+            initialDelaySeconds: 5
+
+
+          
+

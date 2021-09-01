@@ -1,4 +1,4 @@
-#Merging 2 files in one
+#adding 2 files in one (service + deployment)
 
 apiVersion: v1
 kind: Service
@@ -6,7 +6,7 @@ metadata:
   name: backend
 spec:
  selector:
-  app: second-app
+  app: my-app
  ports:
   - protocol: 'TCP'
     port: 80
@@ -16,21 +16,29 @@ spec:
 apiVersion: apps/v1 #specify version
 kind: Deployment # objects
 metadata:    #name of deployment object
-  name: second-app-deployment
+  name: app-deployment
 spec: #define how this deployment configured
-  replicas: 1  # pods count
+  replicas: 1 # pods count
   selector:
     matchLabels:  #what labels controled by this deployment
-      app: second-app 
+      app: my-app 
 
   template:  # image
     metadata:  # name of image
       labels:  #
-        app: second-app #random names app and second-app 
+        app: my-app #random names  
     spec:   # pod spec
       containers: 
-        - name: second-node # container name
-          image: shadibadria/kube-image:v2
+        - name: node-app # container name
+          image: shadibadria/kube-image:latest
+          imagePullPolicy: Always #pull latest image
+          livenessProbe: # if container crash start it again
+            httpGet:
+              path: /
+              port: 8080
+            periodSeconds: 10
+            initialDelaySeconds: 5
+
 
           
 
