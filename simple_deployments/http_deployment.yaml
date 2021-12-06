@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: httpd-frontend
 spec:
-  replicas: 3
+  replicas: 6
   template:
     metadata:
       name: httpd-frontend
